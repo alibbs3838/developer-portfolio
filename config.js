@@ -21,7 +21,7 @@ export const config = {
             description: "A modern and responsive portfolio website to showcase my projects, skills, and experiences. Built with Next.js and styled using TailwindCSS, this site provides a seamless user experience and a clean design that adapts to all devices.",
             image: "/projects/portfolio-app.png",
             technologies: ["Next.js", "TailwindCSS", "Framer Motion", "Vercel"],
-            github: "https://github.com/fr3zyy/portfolio-website",
+            github: "",
             demo: ""
         },
         {

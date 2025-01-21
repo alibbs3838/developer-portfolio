@@ -3,11 +3,11 @@ import { HiCode, HiCube, HiDatabase, HiMail } from "react-icons/hi";
 
 export const config = {
     developer: {
-        name: "Fr3zy",
+        name: "MrBuyukbas",
     },
     social: {
-        github: "Fr3zyy",
-        discord: "1155137511954337887"
+        github: "alibbs3838",
+        discord: "732520401527373884"
     },
     NAV_ITEMS: [
         { href: '/projects', label: 'Projects' },
@@ -22,7 +22,7 @@ export const config = {
             image: "/projects/portfolio-app.png",
             technologies: ["Next.js", "TailwindCSS", "Framer Motion", "Vercel"],
             github: "https://github.com/fr3zyy/portfolio-website",
-            demo: "https://fr3zy.vercel.app"
+            demo: ""
         },
         {
             id: 2,
@@ -30,16 +30,16 @@ export const config = {
             description: "A platform that allows users to share and review their code and profiles.",
             image: "/projects/code-share-app.png",
             technologies: ["Next.js", "MongoDB", "Express"],
-            demo: "https://nirvania.xyz"
+            demo: ""
         },
         {
             id: 3,
-            title: "Wytra Bot",
+            title: "Efsane Bot",
             description: "Enhance your server, simplify moderation, and boost engagement with a versatile Discord bot equipped with customizable commands and powerful features.",
             image: "/projects/wytra-bot-app.png",
             technologies: ["React", "Discord.js", "Node.js", "MongoDB"],
             github: "https://github.com",
-            demo: "https://wytra.fun"
+            demo: ""
         }
     ],
     skills: [
@@ -87,20 +87,20 @@ export const config = {
         {
             icon: <FaDiscord className="w-5 h-5" />,
             label: "Discord",
-            value: "fr3zy",
-            link: `https://discord.com/users/1155137511954337887`
+            value: "MrBuyukbas",
+            link: `https://discord.com/users/`
         },
         {
             icon: <FaGithub className="w-5 h-5" />,
             label: "GitHub",
-            value: "@fr3zy",
-            link: `https://github.com/fr3zyy`
+            value: "@alibbs3838",
+            link: `https://github.com/alibbs3838`
         },
         {
             icon: <HiMail className="w-5 h-5" />,
             label: "Email",
-            value: "fr3zy@example.com",
-            link: "mailto:fr3zy@example.com"
+            value: "38alibuyukbas@gmail.com",
+            link: "mailto:38alibuyukbas@gmail.com"
         },
         {
             icon: <FaMapPin className="w-5 h-5" />,

@@ -76,14 +76,16 @@ const LanyardPlayer = () => {
             {activities.vscode && (
                 <ActivityCard
                     icon={<SiVisualstudiocode className="w-5 h-5 text-sky-500" />}
-                    title="Currently Developing"
+                    title="Developer Portfolio"
                     image={
-                        activities.vscode.assets.large_image.startsWith("mp:external")
-                            ? activities.vscode.assets.large_image.replace(
-                                  "mp:external/",
-                                  "https://"
-                              )
-                            : `https://cdn.discordapp.com/app-assets/${activities.vscode.application_id}/${activities.vscode.assets.large_image}.png`
+                        activities.vscode?.assets?.large_image
+                            ? activities.vscode.assets.large_image.startsWith("mp:external")
+                                ? activities.vscode.assets.large_image.replace(
+                                      "mp:external/",
+                                      "https://"
+                                  )
+                                : `https://cdn.discordapp.com/app-assets/${activities.vscode.application_id}/${activities.vscode.assets.large_image}.png`
+                            : "default-image.png" // Yedek görsel
                     }
                     imageAlt={activities.vscode.assets.large_text || "Visual Studio Code"}
                     mainText={activities.vscode.details}

@@ -12,7 +12,7 @@ const LanyardPlayer = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const ws = new WebSocket('wss://api.lanyard.rest/socket');
+        const ws = new WebSocket("wss://api.lanyard.rest/socket");
 
         ws.onopen = () => {
             ws.send(
@@ -28,15 +28,15 @@ const LanyardPlayer = () => {
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
 
-            if (data.t === 'INIT_STATE' || data.t === 'PRESENCE_UPDATE') {
+            if (data.t === "INIT_STATE" || data.t === "PRESENCE_UPDATE") {
                 const presence = data.d;
                 const vscodeActivity = presence.activities?.find(
-                    activity => activity.name === "Visual Studio Code"
+                    (activity) => activity.name === "Code"
                 );
 
                 setActivities({
                     spotify: presence.spotify,
-                    vscode: vscodeActivity
+                    vscode: vscodeActivity,
                 });
                 setLoading(false);
             }
@@ -76,11 +76,15 @@ const LanyardPlayer = () => {
             {activities.vscode && (
                 <ActivityCard
                     icon={<SiVisualstudiocode className="w-5 h-5 text-sky-500" />}
-                    image={`https://cdn.discordapp.com/app-assets/${activities.vscode.application_id}/${activities.vscode.assets.large_image}.png`}
                     title="Currently Developing"
-                    mainText={activities.vscode.name}
-                    subText={activities.vscode.details}
-                    additionalText={activities.vscode.state}
+                    image={activities.vscode.assets.large_image.replace(
+                        "mp:external",
+                        "https://"
+                    )}
+                    imageAlt={activities.vscode.assets.large_text}
+                    mainText={activities.vscode.details}
+                    subText={activities.vscode.state}
+                    additionalText={activities.vscode.assets.large_text}
                 />
             )}
         </div>

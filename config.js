@@ -52,8 +52,9 @@ export const config = {
             skills: [
                 { name: "Next.js 15", level: "Advanced", hot: true },
                 { name: "React", level: "Advanced" },
+                { name: "HTML & CSS", level: "Intermediate" }
                 { name: "TailwindCSS", level: "Expert" },
-                { name: "JavaScript", level: "Advanced" },
+                { name: "JavaScript", level: "Advanced", hot: true },
                 { name: "Framer Motion", level: "Intermediate" }
             ]
         },
@@ -88,7 +89,7 @@ export const config = {
             icon: <FaDiscord className="w-5 h-5" />,
             label: "Discord",
             value: "MrBuyukbas",
-            link: `https://discord.com/users/`
+            link: `https://discord.com/users/darkking6912`
         },
         {
             icon: <FaGithub className="w-5 h-5" />,

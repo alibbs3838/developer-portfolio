@@ -54,7 +54,7 @@ export const config = {
                 { name: "React", level: "Advanced" },
                 { name: "HTML & CSS", level: "Intermediate" }
                 { name: "TailwindCSS", level: "Expert" },
-                { name: "JavaScript", level: "Advanced", hot: true },
+                { name: "JavaScript", level: "Advanced" },
                 { name: "Framer Motion", level: "Intermediate" }
             ]
         },

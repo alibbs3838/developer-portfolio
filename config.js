@@ -52,7 +52,6 @@ export const config = {
             skills: [
                 { name: "Next.js 15", level: "Advanced", hot: true },
                 { name: "React", level: "Advanced" },
-                { name: "HTML & CSS", level: "Intermediate" }
                 { name: "TailwindCSS", level: "Expert" },
                 { name: "JavaScript", level: "Advanced" },
                 { name: "Framer Motion", level: "Intermediate" }

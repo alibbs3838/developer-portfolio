@@ -1,10 +1,34 @@
-"use client"
 import React from 'react';
+import fs from 'fs/promises';
+import path from 'path';
+import matter from 'gray-matter';
+import { remark } from 'remark';
+import html from 'remark-html';
 import BackgroundEffects from '@/components/ui/background-effects';
 import SectionTitle from './components/SectionTitle';
-import Link from 'next/link'; 
+import Link from 'next/link';
 
-const ProjectsPage = ({ posts }) => {
+const ProjectsPage = async () => {
+    // Sunucu tarafında veri çekme
+    const postsDirectory = path.join(process.cwd(), 'posts');
+    const filenames = await fs.readdir(postsDirectory);
+
+    const postsData = await Promise.all(
+        filenames.map(async (filename) => {
+            const filePath = path.join(postsDirectory, filename);
+            const fileContent = await fs.readFile(filePath, 'utf8');
+            const { data, content } = matter(fileContent);
+
+            const processedContent = await remark().use(html).process(content);
+
+            return {
+                frontMatter: data,
+                slug: filename.replace('.md', ''),
+                contentHtml: processedContent.toString(),
+            };
+        })
+    );
+
     return (
         <section className="py-16" id="projects">
             <div className="container mx-auto px-6 md:px-64">
@@ -18,12 +42,11 @@ const ProjectsPage = ({ posts }) => {
                 <div className="relative">
                     <SectionTitle title="Blog" />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {posts.map((post) => (
+                        {postsData.map((post) => (
                             <div key={post.slug} className="border p-4 rounded-lg shadow-lg">
                                 <h2 className="text-xl font-bold">{post.frontMatter.title}</h2>
                                 <p className="text-gray-600">{post.frontMatter.date}</p>
                                 <p className="mt-2">{post.frontMatter.excerpt}</p>
-                                {/* Link bileşeni ile yönlendirme */}
                                 <Link href={`/blog/${post.slug}`}>
                                     <a className="text-blue-500 hover:underline">
                                         Devamını Oku →
@@ -37,33 +60,5 @@ const ProjectsPage = ({ posts }) => {
         </section>
     );
 };
-
-export async function getStaticProps() {
-    const fs = require('fs/promises');
-    const path = require('path');
-    const matter = require('gray-matter');
-
-    const postsDirectory = path.join(process.cwd(), 'posts');
-    const filenames = await fs.readdir(postsDirectory);
-
-    const postsData = await Promise.all(
-        filenames.map(async (filename) => {
-            const filePath = path.join(postsDirectory, filename);
-            const fileContent = await fs.readFile(filePath, 'utf8');
-            const { data } = matter(fileContent);
-
-            return {
-                frontMatter: data,
-                slug: filename.replace('.md', ''),
-            };
-        })
-    );
-
-    return {
-        props: {
-            posts: postsData,
-        },
-    };
-}
 
 export default ProjectsPage;

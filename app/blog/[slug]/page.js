@@ -14,27 +14,36 @@ export async function generateStaticParams() {
     }));
 
     return slugs.map(({ slug }) => ({
-        slug: [slug], // slug'ı array olarak döndürüyoruz
+        slug, // slug'ı doğrudan dize olarak döndürüyoruz
     }));
 }
 
 // Static veri (markdown içeriklerini alalım)
-export async function generateStaticProps({ params }) {
+export async function getStaticProps({ params }) {
     const { slug } = params;
     const filePath = path.join(process.cwd(), 'blog', `${slug}.md`);
-    const fileContent = await fs.readFile(filePath, 'utf8');
-    const { content, data } = matter(fileContent);
+    
+    // Dosya var mı kontrolü
+    try {
+        const fileContent = await fs.readFile(filePath, 'utf8');
+        const { content, data } = matter(fileContent);
 
-    // Markdown içeriğini HTML'e çevir
-    const processedContent = await remark().use(html).process(content);
-    const contentHtml = processedContent.toString();
+        // Markdown içeriğini HTML'e çevir
+        const processedContent = await remark().use(html).process(content);
+        const contentHtml = processedContent.toString();
 
-    return {
-        props: {
-            contentHtml,
-            ...data, // metadata (başlık, tarih, vb.) da props olarak gelir
-        },
-    };
+        return {
+            props: {
+                contentHtml,
+                ...data, // metadata (başlık, tarih, vb.) da props olarak gelir
+            },
+        };
+    } catch (error) {
+        console.error('Dosya okunamadı:', error);
+        return {
+            notFound: true, // Eğer dosya yoksa 404 sayfası göster
+        };
+    }
 }
 
 // Blog sayfası bileşeni

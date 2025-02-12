@@ -4,28 +4,26 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
 
+// Static parametreler için (slug'lar)
 export async function generateStaticParams() {
-    // 'blog' dizinindeki tüm dosyaları okuyalım
     const files = await fs.readdir(path.join(process.cwd(), 'blog'));
-    
-    // Her dosya için slug oluşturuyoruz
     const slugs = files.map((filename) => ({
         slug: filename.replace('.md', ''),
     }));
 
-    // Slugları döndürüyoruz
-    return slugs;
+    return slugs.map(({ slug }) => ({
+        slug: [slug],
+    }));
 }
 
-export async function getStaticProps({ params }) {
+// Static veri (markdown içeriklerini alalım)
+export async function generateStaticProps({ params }) {
     const { slug } = params;
-    
-    // Slug'a göre ilgili markdown dosyasını okuyalım
     const filePath = path.join(process.cwd(), 'blog', `${slug}.md`);
     const fileContent = await fs.readFile(filePath, 'utf8');
     const { content, data } = matter(fileContent);
 
-    // Markdown içeriğini HTML'e dönüştürelim
+    // Markdown içeriğini HTML'e çevir
     const processedContent = await remark().use(html).process(content);
     const contentHtml = processedContent.toString();
 

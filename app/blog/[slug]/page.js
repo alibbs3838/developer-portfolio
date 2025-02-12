@@ -19,7 +19,7 @@ export async function generateStaticParams() {
 }
 
 // Static veri (markdown içeriklerini alalım)
-export async function getStaticProps({ params }) {
+export async function generateStaticProps({ params }) {
     const { slug } = params;
     const filePath = path.join(process.cwd(), 'blog', `${slug}.md`);
     

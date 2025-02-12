@@ -9,8 +9,26 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
 
-// Blog Sayfası
-const ProjectsPage = ({ postsData }) => {
+const ProjectsPage = async () => {
+  const postsDirectory = path.join(process.cwd(), 'posts');
+  const filenames = await fs.readdir(postsDirectory);
+
+  const postsData = await Promise.all(
+    filenames.map(async (filename) => {
+      const filePath = path.join(postsDirectory, filename);
+      const fileContent = await fs.readFile(filePath, 'utf8');
+      const { data, content } = matter(fileContent);
+
+      const processedContent = await remark().use(html).process(content);
+
+      return {
+        frontMatter: data,
+        slug: filename.replace('.md', ''),
+        contentHtml: processedContent.toString(),
+      };
+    })
+  );
+
   return (
     <section className="py-16" id="projects">
       <div className="container mx-auto px-6 md:px-64">
@@ -28,7 +46,7 @@ const ProjectsPage = ({ postsData }) => {
                 <h2 className="text-xl font-bold">{post.frontMatter.title}</h2>
                 <p className="text-gray-600">{post.frontMatter.date}</p>
                 <p className="mt-2">{post.frontMatter.excerpt}</p>
-                <Link href={`/projects/${post.slug}`}>
+                <Link href={`/blog/${post.slug}`}>
                   <a className="text-blue-500 hover:underline">Devamını Oku →</a>
                 </Link>
               </div>
@@ -40,40 +58,16 @@ const ProjectsPage = ({ postsData }) => {
   );
 };
 
-// Dinamik yolları almak için getStaticPaths
-export async function getStaticPaths() {
+// Static params için asenkron versiyon
+export async function generateStaticParams() {
   const postsDirectory = path.join(process.cwd(), 'posts');
   const filenames = await fs.readdir(postsDirectory);
 
-  const paths = filenames.map((filename) => ({
+  return filenames.map((filename) => ({
     params: {
       slug: filename.replace('.md', ''),
     },
   }));
-
-  return { paths, fallback: false };
-}
-
-// Sayfa için veriyi getiren getStaticProps
-export async function getStaticProps({ params }) {
-  const postsDirectory = path.join(process.cwd(), 'posts');
-  const filePath = path.join(postsDirectory, `${params.slug}.md`);
-  const fileContent = await fs.readFile(filePath, 'utf8');
-  const { data, content } = matter(fileContent);
-
-  const processedContent = await remark().use(html).process(content);
-
-  return {
-    props: {
-      postsData: [
-        {
-          frontMatter: data,
-          slug: params.slug,
-          contentHtml: processedContent.toString(),
-        },
-      ],
-    },
-  };
 }
 
 export default ProjectsPage;

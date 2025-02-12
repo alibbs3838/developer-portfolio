@@ -59,12 +59,10 @@ const ProjectsPage = async () => {
   );
 };
 
-export function generateStaticParams() {
-  const fs = require('fs/promises');
-  const path = require('path');
-
+// Static params için asenkron versiyon
+export async function generateStaticParams() {
   const postsDirectory = path.join(process.cwd(), 'posts');
-  const filenames = fs.readdirSync(postsDirectory);
+  const filenames = await fs.readdir(postsDirectory);
 
   return filenames.map((filename) => ({
     params: {

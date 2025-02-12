@@ -1,39 +1,10 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import BackgroundEffects from '@/components/ui/background-effects';
 import SectionTitle from './components/SectionTitle';
-import fs from 'fs/promises';
-import path from 'path';
-import matter from 'gray-matter';
-import Link from 'next/link';  // Link bileşenini içe aktar
+import Link from 'next/link'; 
 
-const ProjectsPage = () => {
-    const [posts, setPosts] = useState([]);
-
-    useEffect(() => {
-        const fetchPosts = async () => {
-            const postsDirectory = path.join(process.cwd(), 'posts');
-            const filenames = await fs.readdir(postsDirectory);
-
-            const postsData = await Promise.all(
-                filenames.map(async (filename) => {
-                    const filePath = path.join(postsDirectory, filename);
-                    const fileContent = await fs.readFile(filePath, 'utf8');
-                    const { data } = matter(fileContent);
-
-                    return {
-                        frontMatter: data,
-                        slug: filename.replace('.md', ''),
-                    };
-                })
-            );
-
-            setPosts(postsData);
-        };
-
-        fetchPosts();
-    }, []);
-
+const ProjectsPage = ({ posts }) => {
     return (
         <section className="py-16" id="projects">
             <div className="container mx-auto px-6 md:px-64">
@@ -66,5 +37,33 @@ const ProjectsPage = () => {
         </section>
     );
 };
+
+export async function getStaticProps() {
+    const fs = require('fs/promises');
+    const path = require('path');
+    const matter = require('gray-matter');
+
+    const postsDirectory = path.join(process.cwd(), 'posts');
+    const filenames = await fs.readdir(postsDirectory);
+
+    const postsData = await Promise.all(
+        filenames.map(async (filename) => {
+            const filePath = path.join(postsDirectory, filename);
+            const fileContent = await fs.readFile(filePath, 'utf8');
+            const { data } = matter(fileContent);
+
+            return {
+                frontMatter: data,
+                slug: filename.replace('.md', ''),
+            };
+        })
+    );
+
+    return {
+        props: {
+            posts: postsData,
+        },
+    };
+}
 
 export default ProjectsPage;

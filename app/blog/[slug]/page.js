@@ -19,6 +19,7 @@ const BlogPost = ({ post }) => {
     );
 };
 
+// Bu fonksiyon, statik sayfalar için hangi slug'ların oluşturulacağını belirler.
 export async function getStaticPaths() {
     const fs = require('fs/promises');
     const path = require('path');
@@ -26,6 +27,7 @@ export async function getStaticPaths() {
     const postsDirectory = path.join(process.cwd(), 'posts');
     const filenames = await fs.readdir(postsDirectory);
 
+    // Tüm markdown dosyalarının yollarını alıyoruz.
     const paths = filenames.map((filename) => ({
         params: {
             slug: filename.replace('.md', ''),
@@ -33,11 +35,12 @@ export async function getStaticPaths() {
     }));
 
     return {
-        paths,
-        fallback: false,  // Static olarak tüm yolları önceden oluşturur
+        paths, // Tüm slug'ları içeren yolları döndürüyoruz
+        fallback: false, // Tüm yolların statik olarak önceden oluşturulması gerektiğini belirtiyoruz.
     };
 }
 
+// Bu fonksiyon, her bir sayfa için gerekli veriyi alır.
 export async function getStaticProps({ params }) {
     const fs = require('fs/promises');
     const path = require('path');

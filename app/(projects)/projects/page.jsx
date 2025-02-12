@@ -1,34 +1,10 @@
+"use client"
 import React from 'react';
-import fs from 'fs/promises';
-import path from 'path';
-import matter from 'gray-matter';
-import { remark } from 'remark';
-import html from 'remark-html';
 import BackgroundEffects from '@/components/ui/background-effects';
 import SectionTitle from './components/SectionTitle';
 import Link from 'next/link';
 
-const ProjectsPage = async () => {
-    // Sunucu tarafında veri çekme
-    const postsDirectory = path.join(process.cwd(), 'posts');
-    const filenames = await fs.readdir(postsDirectory);
-
-    const postsData = await Promise.all(
-        filenames.map(async (filename) => {
-            const filePath = path.join(postsDirectory, filename);
-            const fileContent = await fs.readFile(filePath, 'utf8');
-            const { data, content } = matter(fileContent);
-
-            const processedContent = await remark().use(html).process(content);
-
-            return {
-                frontMatter: data,
-                slug: filename.replace('.md', ''),
-                contentHtml: processedContent.toString(),
-            };
-        })
-    );
-
+const ProjectsPage = ({ postsData }) => {
     return (
         <section className="py-16" id="projects">
             <div className="container mx-auto px-6 md:px-64">
@@ -60,5 +36,38 @@ const ProjectsPage = async () => {
         </section>
     );
 };
+
+export async function getStaticProps() {
+    const fs = require('fs/promises');
+    const path = require('path');
+    const matter = require('gray-matter');
+    const { remark } = require('remark');
+    const html = require('remark-html');
+
+    const postsDirectory = path.join(process.cwd(), 'posts');
+    const filenames = await fs.readdir(postsDirectory);
+
+    const postsData = await Promise.all(
+        filenames.map(async (filename) => {
+            const filePath = path.join(postsDirectory, filename);
+            const fileContent = await fs.readFile(filePath, 'utf8');
+            const { data, content } = matter(fileContent);
+
+            const processedContent = await remark().use(html).process(content);
+
+            return {
+                frontMatter: data,
+                slug: filename.replace('.md', ''),
+                contentHtml: processedContent.toString(),
+            };
+        })
+    );
+
+    return {
+        props: {
+            postsData,
+        },
+    };
+}
 
 export default ProjectsPage;

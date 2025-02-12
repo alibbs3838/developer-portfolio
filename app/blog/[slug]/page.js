@@ -23,7 +23,6 @@ export async function generateStaticProps({ params }) {
     const { slug } = params;
     const filePath = path.join(process.cwd(), 'blog', `${slug}.md`);
     
-    // Dosya var mı kontrolü
     try {
         const fileContent = await fs.readFile(filePath, 'utf8');
         const { content, data } = matter(fileContent);
@@ -52,7 +51,7 @@ export default function BlogPage({ contentHtml, title, date }) {
         <div>
             <h1>{title}</h1>
             <p>{date}</p>
-            <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+            <div dangerouslySetInnerHTML={{ __html: contentHtml }} /> {/* Doğru format */}
         </div>
     );
 }

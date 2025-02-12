@@ -12,7 +12,7 @@ export async function generateStaticParams() {
     }));
 
     return slugs.map(({ slug }) => ({
-        slug: [slug],
+        slug: [slug], // slug'ı array olarak dönüyoruz
     }));
 }
 
@@ -30,11 +30,12 @@ export async function generateStaticProps({ params }) {
     return {
         props: {
             contentHtml,
-            ...data,
+            ...data, // metadata (başlık, tarih, vb.) da props olarak gelir
         },
     };
 }
 
+// Blog sayfası bileşeni
 export default function BlogPage({ contentHtml, title, date }) {
     return (
         <div>

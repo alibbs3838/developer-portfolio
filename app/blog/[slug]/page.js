@@ -1,3 +1,5 @@
+// app/blog/[slug]/page.js
+
 import fs from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
@@ -12,7 +14,7 @@ export async function generateStaticParams() {
     }));
 
     return slugs.map(({ slug }) => ({
-        slug: [slug], // slug'ı array olarak dönüyoruz
+        slug: [slug], // slug'ı array olarak döndürüyoruz
     }));
 }
 

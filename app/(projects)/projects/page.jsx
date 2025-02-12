@@ -1,4 +1,3 @@
-"use client";
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -60,7 +59,6 @@ const ProjectsPage = async () => {
   );
 };
 
-// Yeni `generateStaticParams` fonksiyonu
 export function generateStaticParams() {
   const fs = require('fs/promises');
   const path = require('path');

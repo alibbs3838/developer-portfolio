@@ -1,8 +1,9 @@
-"use client"
+"use client";
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { FaExternalLinkAlt } from 'react-icons/fa';
+import Image from 'next/image'; // Next.js Image importu
 import { itemAnimation } from './Animations';
 
 export const ProjectCard = ({ project, index }) => (
@@ -12,9 +13,12 @@ export const ProjectCard = ({ project, index }) => (
     >
         <div className="sm:w-1/3">
             <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
-                <img
-                    src={project.image}
+                <Image
+                    src={project.image} // Image bileşenini kullandık
                     alt={project.title}
+                    layout="responsive"
+                    width={800}
+                    height={600}
                     className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />

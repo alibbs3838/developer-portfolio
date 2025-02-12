@@ -38,7 +38,7 @@ export async function generateStaticProps({ params }) {
             },
         };
     } catch (error) {
-        console.error('Dosya okunamadı:', error);
+        console.error('Dosyaa okunamadı:', error);
         return {
             notFound: true, // Eğer dosya yoksa 404 sayfası göster
         };

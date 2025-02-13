@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import BackgroundEffects from '@/components/ui/background-effects';
 import SectionTitle from './components/SectionTitle';
 import Link from 'next/link';
@@ -39,7 +40,9 @@ const ProjectsPage = async () => {
           blurAmount="3xl"
         />
         <div className="relative">
-          <SectionTitle title="Blog" />
+          {/* SectionTitle Bileşenini Burada Kullanıyoruz */}
+          <SectionTitle />
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {postsData.map((post) => (
               <div key={post.slug} className="border p-4 rounded-lg shadow-lg">

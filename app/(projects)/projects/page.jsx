@@ -4,12 +4,16 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
+import ProjectCard from './components/ProjectCard'; // Doğru yolu kontrol edin
 import BackgroundEffects from '@/components/ui/background-effects';
 import SectionTitle from './components/SectionTitle.jsx';
 
 export const metadata = {
   title: 'Projeler',
   description: 'Tüm projelerim burada listeleniyor.',
+};
+const ProjectCard = () => {
+  return <div>Project Card</div>;
 };
 
 // Markdown dosyalarını okuyup veriyi alalım

@@ -14,12 +14,12 @@ export async function generateStaticParams() {
     }));
 
     return slugs.map(({ slug }) => ({
-        slug, // slug'ı doğrudan dize olarak döndürüyoruz
+        slug, 
     }));
 }
 
-// Static veri (markdown içeriklerini alalım)
-export async function generateStaticProps({ params }) {
+// Blog sayfası bileşeni (async yapıldı)
+export default async function BlogPage({ params }) {
     const { slug } = params;
     const filePath = path.join(process.cwd(), 'blog', `${slug}.md`);
     
@@ -31,27 +31,15 @@ export async function generateStaticProps({ params }) {
         const processedContent = await remark().use(html).process(content);
         const contentHtml = processedContent.toString();
 
-        return {
-            props: {
-                contentHtml,
-                ...data, // metadata (başlık, tarih, vb.) da props olarak gelir
-            },
-        };
+        return (
+            <div>
+                <h1>{data.title}</h1>
+                <p>{data.date}</p>
+                <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+            </div>
+        );
     } catch (error) {
-        console.error('Dosyaa okunamadı:', error);
-        return {
-            notFound: true, // Eğer dosya yoksa 404 sayfası göster
-        };
+        console.error('Dosya okunamadı:', error);
+        return <p>Yazı bulunamadı.</p>;
     }
-}
-
-// Blog sayfası bileşeni
-export default function BlogPage({ contentHtml, title, date }) {
-    return (
-        <div>
-            <h1>{title}</h1>
-            <p>{date}</p>
-            <div dangerouslySetInnerHTML={{ __html: contentHtml }} /> {/* Doğru format */}
-        </div>
-    );
 }

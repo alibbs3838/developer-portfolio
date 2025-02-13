@@ -1,10 +1,8 @@
-// app/(projects)/projects/page.jsx
-
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
-import BackgroundEffects from '@/components/ui/background-effects';
+import BackgroundEffects from 'components/ui/background-effects'; // Corrected quotes
 import SectionTitle from './components/SectionTitle.jsx';
 
 export const metadata = {

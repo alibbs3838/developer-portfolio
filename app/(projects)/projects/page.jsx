@@ -1,34 +1,49 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import BackgroundEffects from '@/components/ui/background-effects';
-import SectionTitle from './components/SectionTitle';
-import Link from 'next/link';
-import fs from 'fs/promises';
+// app/(projects)/projects/page.jsx
+
+import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { remark } from 'remark';
-import html from 'remark-html';
+import Link from 'next/link';
+import BackgroundEffects from '@/components/ui/background-effects';
+import SectionTitle from '@/components/SectionTitle';
 
-const ProjectsPage = async () => {
+export const metadata = {
+  title: 'Projeler',
+  description: 'Tüm projelerim burada listeleniyor.',
+};
+
+// Markdown dosyalarını okuyup veriyi alalım
+async function getProjectsData() {
   const postsDirectory = path.join(process.cwd(), 'posts');
-  const filenames = await fs.readdir(postsDirectory);
+  const filenames = fs.readdirSync(postsDirectory);
 
-  const postsData = await Promise.all(
-    filenames.map(async (filename) => {
-      const filePath = path.join(postsDirectory, filename);
-      const fileContent = await fs.readFile(filePath, 'utf8');
-      const { data, content } = matter(fileContent);
+  const postsData = filenames.map((filename) => {
+    const filePath = path.join(postsDirectory, filename);
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const { data } = matter(fileContent);
 
-      const processedContent = await remark().use(html).process(content);
+    return {
+      frontMatter: data,
+      slug: filename.replace('.md', ''),
+    };
+  });
 
-      return {
-        frontMatter: data,
-        slug: filename.replace('.md', ''),
-        contentHtml: processedContent.toString(),
-      };
-    })
-  );
+  return postsData;
+}
+
+// Static Params
+export async function generateStaticParams() {
+  const postsDirectory = path.join(process.cwd(), 'posts');
+  const filenames = fs.readdirSync(postsDirectory);
+
+  return filenames.map((filename) => ({
+    slug: filename.replace('.md', ''),
+  }));
+}
+
+// Projeler Sayfası
+const ProjectsPage = async () => {
+  const postsData = await getProjectsData();
 
   return (
     <section className="py-16" id="projects">
@@ -40,17 +55,15 @@ const ProjectsPage = async () => {
           blurAmount="3xl"
         />
         <div className="relative">
-          {/* SectionTitle Bileşenini Burada Kullanıyoruz */}
-          <SectionTitle />
-          
+          <SectionTitle title="Projelerim" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {postsData.map((post) => (
               <div key={post.slug} className="border p-4 rounded-lg shadow-lg">
                 <h2 className="text-xl font-bold">{post.frontMatter.title}</h2>
                 <p className="text-gray-600">{post.frontMatter.date}</p>
                 <p className="mt-2">{post.frontMatter.excerpt}</p>
-                <Link href={`/blog/${post.slug}`}>
-                  <a className="text-blue-500 hover:underline">Devamını Oku →</a>
+                <Link href={`/blog/${post.slug}`} className="text-blue-500 hover:underline">
+                  Devamını Oku →
                 </Link>
               </div>
             ))}
@@ -60,17 +73,5 @@ const ProjectsPage = async () => {
     </section>
   );
 };
-
-// Static params için asenkron versiyon
-export async function generateStaticParams() {
-  const postsDirectory = path.join(process.cwd(), 'posts');
-  const filenames = await fs.readdir(postsDirectory);
-
-  return filenames.map((filename) => ({
-    params: {
-      slug: filename.replace('.md', ''),
-    },
-  }));
-}
 
 export default ProjectsPage;

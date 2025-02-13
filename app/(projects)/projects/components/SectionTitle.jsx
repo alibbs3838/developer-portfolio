@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from 'components/ui/button'; // Corrected quotes
 import { HiArrowRight, HiCode } from 'react-icons/hi';
 import { motion } from 'framer-motion';
-import { config } from '@/config';
+import { config } from 'config'; // Corrected quotes
 import { titleAnimation } from './Animations';
 
 const SectionTitle = () => (
@@ -12,7 +12,6 @@ const SectionTitle = () => (
         variants={titleAnimation}
         className="mb-16 space-y-6"
     >
-
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
             <div className="space-y-4 max-w-2xl">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary tracking-tight">

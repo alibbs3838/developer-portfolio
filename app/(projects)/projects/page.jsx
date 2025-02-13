@@ -5,7 +5,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
 import BackgroundEffects from '@/components/ui/background-effects';
-import SectionTitle from './components/SectionTitle';
+import SectionTitle from './components/SectionTitle.jsx';
 
 export const metadata = {
   title: 'Projeler',
